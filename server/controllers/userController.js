@@ -1,13 +1,14 @@
+const  bcrypt = require('bcrypt');
 const userModel = require("../models/userModel");
 
 // login callback
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.findOne({ email, password });
-    if (!user) {
-      return res.status(404).send("User Not Found");
-    }
+    const user = await userModel.findOne({email : email})
+    if(!user) return res.status(400).json({message : "User does not exist"})
+    const isMatch  = await bcrypt.compare(password,user.password)
+    if(!isMatch) return res.status(400).json({message : "Invalid Credentials"})
     res.status(200).json({
       success: true,
       user,
@@ -23,7 +24,14 @@ const loginController = async (req, res) => {
 //Register Callback
 const registerController = async (req, res) => {
   try {
-    const newUser = new userModel(req.body);
+    const {name ,email,password} = req.body;
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password,salt)
+    const newUser = new userModel({
+      name,
+      email,
+      password : passwordHash,
+    });
     await newUser.save();
     res.status(201).json({
       success: true,

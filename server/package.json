@@ -1,7 +1,7 @@
 {
-  "name": "Expanse-Management-System",
+  "name": "ExpenseWise",
   "version": "1.0.0",
-  "description": "expanse tracker app",
+  "description": "ExpenseWise",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,6 +13,7 @@
   "author": "Techinfoyt",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "concurrently": "^7.5.0",
     "cors": "^2.8.5",
